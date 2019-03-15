@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" >
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+
+
+  
+  <style>
+  #source::-webkit-calendar-picker-indicator,#to::-webkit-calendar-picker-indicator {
+	display: none;
+}
+/* Hide the list on focus of the input field */
+datalist {
+	display: none;
+}
+#Adults::-webkit-inner-spin-button, 
+#Adults::-webkit-outer-spin-button,
+#YoungAdults::-webkit-inner-spin-button, 
+#YoungAdults::-webkit-outer-spin-button,
+#children::-webkit-inner-spin-button, 
+#children::-webkit-outer-spin-button,
+#infants::-webkit-inner-spin-button, 
+#infants::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+  </style>
+<meta charset="ISO-8859-1">
+<title>Home Page</title>
+</head>
+<body  >    
+        	
+<div class="container"  ng-app="myApp" ng-controller="myCtrl" data-ng-init="init()">
+  <hr>
+  <div class="row">
+  <div class="col-sm-12"  >
+  <div style="background-color: white;padding-left: 200px;padding-top: 10px; padding-bottom: 5px;border-radius: 25px; " >
+  <table style="padding-right: 20px;">
+  <tr>
+  <td><p>
+  From:</p>
+  <td><input name="fromsource" list="sources" id="source" ng-model="selectedfrom" />
+<datalist id="sources" >
+<option ng-repeat="v in airportcode" value="{{v.code }}-{{v.name }}" ></option>
+</datalist></td> 
+ 
+  <td style="width:175px;"><p id="return_date" style="display: none;">Return Date:</p></td>
+  </tr>
+  <tr>
+  <td><p>To:</p></td>
+  <td><input  list="sources_to"  id="to"  ng-model="selectedto"/>
+  <datalist id="sources_to" >
+  <option ng-repeat="v1 in airportcode" value="{{v1.code }}-{{v1.name}}" ></option>
+</datalist></td><td><input type="button" value="submit" ng-click="myfunction(selectedfrom,selectedto)"></td>
+  </tr></table></div></div></div>
+ <div class="container" >
+<hr>
+<p>Number of requests processed :{{Total_Request}}
+</p>
+<label>Total number of requests resulted in an OK response :{{Success}}
+
+</label> <br>
+<label>Total number of requests resulted in a 4xx response :{{Client_Error}}
+</label> <br>
+<label>Total number of requests resulted in a 5xx response :{{Server_Error}}
+</label><br>
+<label>Average response time of all requests: {{Avg_Response}}
+</label><br>
+<label>Min response time of all requests :{{Min_Response}}
+</label><br>
+<label>Max response time of all requests:{{Max_Response}}</label></div>
+ 
+</div>
+
+  
+  <div class="container" style="text-align:center">
+<p style=" align:center"> Fare result</p>
+
+  </div>
+  
+  <script>
+  
+  
+var app = angular.module("myApp", []);
+
+app.controller("myCtrl", function($scope, $http) {
+	$scope.airportcode = [];
+	$scope.airportname = [];
+	$scope.Total_Request="";
+	 $scope.Success;
+	  $scope.Client_Error = "";
+	  $scope.Server_Error="";
+		 $scope.Avg_Response = "";
+		  $scope.Min_Response = "";
+		  $scope.Max_Response = "";
+	$scope.init = function () {
+		var totaldata=[]
+		
+		$http.get("locations_en.json").then(function(response) {
+		    $scope.myWelcome = response.data;
+		    
+		    angular.forEach(response.data, function (value, key) {
+		    	totaldata.push({"code":value.code,"name":value.name});
+            });
+			//airportnames.push(response.data[i].name);
+			
+			$scope.airportcode=totaldata;
+			
+			
+		  });
+		
+	};
+	$scope.myfunction=function(from,to){
+		alert(from+to);
+		
+		$http.post('fares/'+{from}/{to}, data, config)
+        .success(function (data, status, headers, config) {
+            $scope.PostDataResponse = data;
+        })
+		
+		
+		
+	};
+	
+	$scope.report = function () {
+		var totaldata1=[]
+		
+		$http.get("/getstatistics").then(function(response) {
+		    
+		    
+		    angular.forEach(response.data, function (value, key) {
+		    	totaldata1.push({"code":value.code,"name":value.name});
+		    	$scope.Total_Request=value.Total_Request;
+		    	$scope.Success ="hi";
+		   	  $scope.Client_Error = value.Client_Error;
+		   	  $scope.Server_Error=value.Server_Error;
+		   		 $scope.Avg_Response = value.Avg_Response;
+		   		  $scope.Min_Response = value.Min_Response;
+		   		  $scope.Min_Response = value.Min_Response;
+            });
+			
+			
+			$scope.airportcode=totaldata;
+			
+			
+		  });
+		
+	};
+	
+	
+	
+   
+});
+
+</script>
+
+</body>
+</html>
