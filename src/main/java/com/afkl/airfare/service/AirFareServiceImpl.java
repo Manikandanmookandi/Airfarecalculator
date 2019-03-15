@@ -23,6 +23,7 @@ import com.afkl.airfare.authentication.ConfigureAuthentication;
 
 @Configuration
 @PropertySource("classpath:application.properties")
+@Service
 public class AirFareServiceImpl implements AirfareService {
 
 	@Autowired
