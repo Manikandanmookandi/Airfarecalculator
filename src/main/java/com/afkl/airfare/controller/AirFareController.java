@@ -29,7 +29,7 @@ public class AirFareController {
     	
         return new ResponseEntity<List<String>>(airports, HttpStatus.OK);
     }
-	@RequestMapping(value = "/airports/{orgin}/{destination}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/fares/{orgin}/{destination}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<List<String>> retrieveFareDetails(@PathVariable("orgin") String origin,
 			@PathVariable("destination") String destination) throws InterruptedException, ExecutionException {
 		
