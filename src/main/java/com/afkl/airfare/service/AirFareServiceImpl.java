@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.stereotype.Service;
 import com.afkl.airfare.authentication.ConfigureAuthentication;
 
 @Configuration
