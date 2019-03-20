@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.stereotype.Component;
+@Component
 public interface AirfareService {
 
 	List<String> retrieveAirport(); 
