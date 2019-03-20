@@ -1,7 +1,7 @@
 package com.afkl.airfare.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,14 +22,15 @@ import com.afkl.airfare.service.AirfareService;
 public class AirFareController {
 	@Autowired
     private AirfareService airfareService;
-	@RequestMapping(value = "/airports", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE }) 
+	
+	@RequestMapping(value ="/airports", method = RequestMethod.GET) 
     public ResponseEntity<List<String>> listAllAirports() {
-
+		
     	List<String> airports = airfareService.retrieveAirport();
     	
         return new ResponseEntity<List<String>>(airports, HttpStatus.OK);
     }
-	@RequestMapping(value = "/fares/{orgin}/{destination}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value ="/airports/{orgin}/{destination}", method = RequestMethod.GET)
 	public ResponseEntity<List<String>> retrieveFareDetails(@PathVariable("orgin") String origin,
 			@PathVariable("destination") String destination) throws InterruptedException, ExecutionException {
 		
@@ -48,7 +49,7 @@ public class AirFareController {
         return new ResponseEntity<List<String>>(fareDetails, HttpStatus.OK);
     }
 	
-	@RequestMapping(value = "/statistics", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE }) 
+	@RequestMapping(value = "/statistics", method = RequestMethod.GET) 
     public ResponseEntity<Map<String, Object>> getStatistics() {
 		
     	Map<String, Object> responseValue = airfareService.retrieveStats();
