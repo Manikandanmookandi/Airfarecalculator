@@ -18,13 +18,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import com.afkl.airfare.authentication.ConfigureAuthentication;
 
+@Service
 @Configuration
 @PropertySource("classpath:application.properties")
-@Service
 public class AirFareServiceImpl implements AirfareService {
 
 	@Autowired
@@ -39,12 +39,13 @@ public class AirFareServiceImpl implements AirfareService {
 	@Value( "${api.url}" )
 	private String apiUrl;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> retrieveAirport() {
 		Instant startTime = Instant.now();
-		requestCount++;
+		requestCount++;		
 		restTemplate=configAuth.oAuthRestTemplate();
-		ResponseEntity<List> response = restTemplate.getForEntity(apiUrl + "/airports", List.class);
+		ResponseEntity<List> response = restTemplate.getForEntity(apiUrl + "/airports?lang=en", List.class);
 		Instant endTime = Instant.now();
 		
 		long diff = Duration.between(startTime, endTime).toMillis();
@@ -69,7 +70,7 @@ public class AirFareServiceImpl implements AirfareService {
 		Instant startTime = Instant.now();
 		requestCount++;
 		restTemplate=configAuth.oAuthRestTemplate();
-		ResponseEntity<String> response = restTemplate.getForEntity(apiUrl+"/airports/{orgin}", String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(apiUrl+"/airports/{orgin}?lang=en", String.class);
 		Instant endTime = Instant.now();
 		long diff = Duration.between(startTime, endTime).toMillis();
 		
@@ -92,7 +93,7 @@ public class AirFareServiceImpl implements AirfareService {
 	public CompletableFuture<ResponseEntity<String>> retrieveDestination(String destination) {
 		Instant startTime = Instant.now();
 		restTemplate=configAuth.oAuthRestTemplate();
-		ResponseEntity<String> response = restTemplate.getForEntity(apiUrl+"/airports/{destination}", String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(apiUrl+"/airports/{destination}?lang=en", String.class);
 		Instant endTime = Instant.now();
 		long diff = Duration.between(startTime, endTime).toMillis();
 		resTime.add(diff);
@@ -113,7 +114,7 @@ public class AirFareServiceImpl implements AirfareService {
 	public CompletableFuture<ResponseEntity<String>> retrieveFare(String orgin, String destination) {
 		Instant startTime = Instant.now();
 		restTemplate=configAuth.oAuthRestTemplate();
-		ResponseEntity<String> response = restTemplate.getForEntity(apiUrl+"/fares/{origin}/{destination}", String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(apiUrl+"/fares/{origin}/{destination}?currency=EUR", String.class);
 		Instant endTime = Instant.now();
 		long diff = Duration.between(startTime, endTime).toMillis();
 		resTime.add(diff);
